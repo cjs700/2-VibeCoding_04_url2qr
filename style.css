@@ -1,0 +1,482 @@
+:root {
+  /* URL2QR Golden Yellow & Amber Brand Colors */
+  --primary: #f59e0b;
+  --primary-dark: #d97706;
+  --primary-light: #fef3c7;
+  --primary-glow: rgba(245, 158, 11, 0.25);
+  
+  --accent-gold: #fbbf24;
+  --accent-orange: #f97316;
+  --accent-cream: #fffbeb;
+
+  /* Bright Theme Colors */
+  --bg-base: #fafaf9;
+  --text-main: #1c1917;
+  --text-muted: #78716c;
+  --text-sub: #57534e;
+  
+  /* Glassmorphism Card */
+  --card-bg: rgba(255, 255, 255, 0.82);
+  --card-border: rgba(255, 255, 255, 0.95);
+  --input-bg: rgba(255, 255, 255, 0.9);
+  --input-border: rgba(229, 231, 235, 0.9);
+
+  /* Shadows */
+  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 20px 45px -12px rgba(217, 119, 6, 0.12), 0 8px 20px -6px rgba(0, 0, 0, 0.03);
+  --shadow-qr: 0 25px 50px -12px rgba(245, 158, 11, 0.25), 0 0 35px rgba(251, 191, 36, 0.18);
+
+  --radius-lg: 24px;
+  --radius-md: 14px;
+  --transition-smooth: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Dynamic Mouse Gradient Variables (Updated via JS) */
+  --mouse-x: 50%;
+  --mouse-y: 50%;
+  --grad-hue1: 42;  /* Golden Yellow */
+  --grad-hue2: 24;  /* Warm Coral / Orange */
+  --grad-hue3: 50;  /* Bright Amber */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+  background-color: var(--bg-base);
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Dynamic Interactive Gradient Background (Matching Yellow/Gold Logo) */
+.gradient-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: 
+    radial-gradient(
+      circle 650px at var(--mouse-x) var(--mouse-y),
+      hsla(var(--grad-hue1), 95%, 78%, 0.4),
+      transparent 70%
+    ),
+    radial-gradient(
+      circle 850px at calc(100% - var(--mouse-x)) calc(100% - var(--mouse-y)),
+      hsla(var(--grad-hue2), 90%, 82%, 0.32),
+      transparent 75%
+    ),
+    radial-gradient(
+      circle 700px at calc(var(--mouse-y) * 1.2) calc(var(--mouse-x) * 0.8),
+      hsla(var(--grad-hue3), 85%, 85%, 0.28),
+      transparent 70%
+    ),
+    linear-gradient(135deg, #fefce8 0%, #fffbeb 50%, #fef3c7 100%);
+  transition: filter 0.5s ease;
+}
+
+/* Soft Decorative Floating Ambient Blobs */
+.ambient-glow {
+  position: fixed;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 0;
+  animation: floatOrb 15s ease-in-out infinite alternate;
+}
+
+.ambient-glow.one {
+  top: -120px;
+  left: -100px;
+  background: linear-gradient(135deg, #fde047, #fb923c);
+}
+
+.ambient-glow.two {
+  bottom: -140px;
+  right: -100px;
+  background: linear-gradient(135deg, #fed7aa, #fef08a);
+  animation-duration: 20s;
+  animation-direction: alternate-reverse;
+}
+
+@keyframes floatOrb {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    transform: translate(90px, 70px) scale(1.18);
+  }
+}
+
+/* Header & Logo */
+.app-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 1.5rem 2.5rem;
+  display: flex;
+  align-items: center;
+  z-index: 50;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  background: rgba(255, 255, 255, 0.75);
+  padding: 6px 14px;
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+  border: 1.5px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.12);
+}
+
+.logo-container:hover {
+  transform: translateY(-2px) scale(1.03);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 8px 24px rgba(217, 119, 6, 0.2);
+}
+
+.logo-img {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+  border-radius: 6px;
+  display: block;
+}
+
+/* Main Container Layout */
+.main-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2.5rem 1.5rem;
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  z-index: 10;
+  transition: var(--transition-smooth);
+}
+
+/* State: When QR Generated */
+.main-container.has-qr {
+  justify-content: space-between;
+  padding-top: 5.5rem;
+  padding-bottom: 2rem;
+}
+
+/* QR Code Section (Center) */
+.qr-section {
+  display: none;
+  opacity: 0;
+  transform: scale(0.85) translateY(25px);
+  transition: var(--transition-smooth);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: auto 0;
+  z-index: 15;
+}
+
+.main-container.has-qr .qr-section {
+  display: flex;
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.qr-card-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.qr-card {
+  background: #ffffff;
+  padding: 1.6rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-qr);
+  border: 2px solid rgba(254, 240, 138, 0.6);
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease;
+  overflow: hidden;
+  user-select: none;
+}
+
+.qr-card:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 32px 64px -14px rgba(217, 119, 6, 0.35), 0 0 45px rgba(251, 191, 36, 0.3);
+}
+
+.qrcode-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 220px;
+  height: 220px;
+}
+
+.qrcode-display canvas,
+.qrcode-display img {
+  display: block !important;
+  border-radius: 8px;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.qr-overlay-hint {
+  position: absolute;
+  inset: 0;
+  background: rgba(28, 25, 23, 0.88);
+  backdrop-filter: blur(5px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #ffffff;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  border-radius: var(--radius-lg);
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: -0.2px;
+}
+
+.qr-card:hover .qr-overlay-hint {
+  opacity: 1;
+}
+
+.download-icon {
+  width: 30px;
+  height: 30px;
+  stroke: #fde047;
+  animation: bounce 1.5s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.qr-caption {
+  font-size: 0.95rem;
+  color: var(--text-sub);
+  text-align: center;
+  font-weight: 500;
+}
+
+.qr-caption strong {
+  color: var(--primary-dark);
+  font-weight: 700;
+}
+
+/* Input Section */
+.input-section {
+  width: 100%;
+  max-width: 640px;
+  transition: var(--transition-smooth);
+  margin: 0 auto;
+}
+
+.main-container.has-qr .input-section {
+  margin-top: 1.25rem;
+}
+
+.input-wrapper {
+  background: var(--card-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1.5px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: 2.75rem 2.25rem;
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+  transition: var(--transition-smooth);
+}
+
+.main-container.has-qr .input-wrapper {
+  padding: 1.15rem 1.75rem;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 10px 25px -5px rgba(217, 119, 6, 0.08);
+}
+
+.hero-title {
+  font-size: 1.85rem;
+  font-weight: 800;
+  letter-spacing: -0.6px;
+  margin-bottom: 0.75rem;
+  background: linear-gradient(135deg, #1c1917 20%, #44403c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: var(--transition-smooth);
+}
+
+.hero-desc {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+  line-height: 1.6;
+  font-weight: 400;
+  transition: var(--transition-smooth);
+}
+
+/* Compact mode when QR is shown */
+.main-container.has-qr .hero-title {
+  font-size: 1.1rem;
+  margin-bottom: 0.2rem;
+  font-weight: 700;
+}
+
+.main-container.has-qr .hero-desc {
+  display: none;
+}
+
+.url-form {
+  position: relative;
+  width: 100%;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  background: var(--input-bg);
+  border: 1.5px solid var(--input-border);
+  border-radius: var(--radius-md);
+  padding: 6px 6px 6px 16px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.input-group:focus-within {
+  border-color: var(--primary);
+  background: #ffffff;
+  box-shadow: 0 0 0 4px var(--primary-glow), inset 0 2px 4px rgba(0, 0, 0, 0.01);
+}
+
+.input-icon {
+  display: flex;
+  align-items: center;
+  color: #a8a29e;
+  margin-right: 12px;
+  transition: color 0.2s ease;
+}
+
+.input-group:focus-within .input-icon {
+  color: var(--primary-dark);
+}
+
+.input-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.url-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-main);
+  font-size: 1.05rem;
+  font-weight: 500;
+  font-family: inherit;
+  padding: 9px 0;
+}
+
+.url-input::placeholder {
+  color: #a8a29e;
+  font-weight: 400;
+}
+
+.submit-btn {
+  background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+  color: #ffffff;
+  border: none;
+  outline: none;
+  padding: 11px 24px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4);
+}
+
+.submit-btn:hover {
+  background: linear-gradient(135deg, #d97706 0%, #c2410c 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(217, 119, 6, 0.5);
+}
+
+.submit-btn:active {
+  transform: translateY(0);
+}
+
+.btn-arrow {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.2s ease;
+}
+
+.submit-btn:hover .btn-arrow {
+  transform: translateX(3px);
+}
+
+.error-msg {
+  color: #dc2626;
+  font-size: 0.88rem;
+  margin-top: 10px;
+  text-align: left;
+  display: none;
+  padding-left: 6px;
+  font-weight: 600;
+}
+
+.error-msg.visible {
+  display: block;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .app-header {
+    padding: 1.25rem 1.25rem;
+  }
+  
+  .input-wrapper {
+    padding: 2rem 1.25rem;
+  }
+  
+  .hero-title {
+    font-size: 1.45rem;
+  }
+  
+  .submit-btn {
+    padding: 9px 18px;
+  }
+  
+  .qrcode-display {
+    width: 180px;
+    height: 180px;
+  }
+}

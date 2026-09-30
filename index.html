@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URL2QR - 스마트 QR코드 생성기</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+  <!-- qrcode.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Dynamic Interactive Gradient Background -->
+  <div class="gradient-bg" id="gradientBg"></div>
+  <div class="ambient-glow one"></div>
+  <div class="ambient-glow two"></div>
+
+  <!-- Header with Logo -->
+  <header class="app-header">
+    <div class="logo-container" id="logoContainer" title="처음으로 리셋">
+      <img src="img/logo.png" alt="URL2QR Logo" class="logo-img" id="logoImg" onerror="this.onerror=null; this.src='img/이미지.png';">
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="main-container" id="mainContainer">
+    <!-- QR Code Result Section (Initially hidden / scale 0) -->
+    <section class="qr-section" id="qrSection" aria-live="polite">
+      <div class="qr-card-wrapper">
+        <div class="qr-card" id="qrCard" title="클릭하여 JPG 이미지로 다운로드">
+          <div id="qrcode" class="qrcode-display"></div>
+          <div class="qr-overlay-hint">
+            <svg class="download-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>JPG 다운로드</span>
+          </div>
+        </div>
+        <p class="qr-caption">QR코드를 클릭하면 <strong>JPG 파일</strong>로 다운로드됩니다.</p>
+      </div>
+    </section>
+
+    <!-- Input Section (Centered initially, moves down when QR is created) -->
+    <section class="input-section" id="inputSection">
+      <div class="input-wrapper">
+        <h1 class="hero-title" id="heroTitle">QR 코드로 변환할 URL을 입력하세요</h1>
+        <p class="hero-desc" id="heroDesc">웹사이트 주소를 입력하고 확인을 누르면 바로 다운로드 가능한 QR코드가 생성됩니다.</p>
+        
+        <form class="url-form" id="urlForm" onsubmit="return false;">
+          <div class="input-group">
+            <span class="input-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              </svg>
+            </span>
+            <input 
+              type="url" 
+              id="urlInput" 
+              class="url-input" 
+              placeholder="https://example.com" 
+              required 
+              autocomplete="off"
+            >
+            <button type="submit" id="generateBtn" class="submit-btn">
+              <span>확인</span>
+              <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </button>
+          </div>
+          <div class="error-msg" id="errorMsg">올바른 URL을 입력해주세요 (예: https://naver.com)</div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
